@@ -1,6 +1,9 @@
 
+
 "use client";
 import { useEffect, useState } from "react";
+import MarcaForm from "../components/MarcaForm";
+import MarcaList from "../components/MarcaList";
 
 type Marca = {
   id: number;
@@ -62,46 +65,29 @@ export default function Home() {
     setDescripcion(marca.descripcion);
   };
 
+  const handleCancelEdit = () => {
+    setEditId(null);
+    setNombre("");
+    setDescripcion("");
+  };
+
   return (
     <div className="max-w-xl mx-auto py-10">
       <h1 className="text-2xl font-bold mb-6">CRUD de Marcas</h1>
-      <form onSubmit={handleSubmit} className="mb-8 flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Nombre"
-          value={nombre}
-          onChange={e => setNombre(e.target.value)}
-          className="border p-2 rounded"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Descripción"
-          value={descripcion}
-          onChange={e => setDescripcion(e.target.value)}
-          className="border p-2 rounded"
-        />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-          {editId === null ? "Crear Marca" : "Actualizar Marca"}
-        </button>
-        {editId !== null && (
-          <button type="button" onClick={() => { setEditId(null); setNombre(""); setDescripcion(""); }} className="bg-gray-400 text-white px-4 py-2 rounded">Cancelar edición</button>
-        )}
-      </form>
-      <ul className="space-y-4">
-        {marcas.map(marca => (
-          <li key={marca.id} className="border p-4 rounded flex justify-between items-center">
-            <div>
-              <span className="font-semibold">{marca.nombre}</span>
-              <span className="block text-sm text-gray-600">{marca.descripcion}</span>
-            </div>
-            <div className="flex gap-2">
-              <button onClick={() => handleEdit(marca)} className="bg-yellow-400 px-2 py-1 rounded">Editar</button>
-              <button onClick={() => handleDelete(marca.id)} className="bg-red-500 text-white px-2 py-1 rounded">Eliminar</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <MarcaForm
+        nombre={nombre}
+        descripcion={descripcion}
+        onNombreChange={setNombre}
+        onDescripcionChange={setDescripcion}
+        onSubmit={handleSubmit}
+        editId={editId}
+        onCancelEdit={handleCancelEdit}
+      />
+      <MarcaList
+        marcas={marcas}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
     </div>
   );
 }
