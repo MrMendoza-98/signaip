@@ -1,68 +1,37 @@
 
 
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MarcaForm from "../components/MarcaForm";
 import MarcaList from "../components/MarcaList";
-
-type Marca = {
-  id: number;
-  nombre: string;
-  descripcion: string;
-};
-
-const API_URL = "http://127.0.0.1:8000/marcas";
+import { useMarcas } from "../hooks/useMarcas";
 
 export default function Home() {
-  const [marcas, setMarcas] = useState<Marca[]>([]);
+  const { marcas, addMarca, editMarca, removeMarca, loading, error } = useMarcas();
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [editId, setEditId] = useState<number | null>(null);
 
-  // Fetch marcas
-  const fetchMarcas = async () => {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-    setMarcas(data);
-  };
-
-  useEffect(() => {
-    fetchMarcas();
-  }, []);
-
-  // Create or update marca
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editId === null) {
-      await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, descripcion }),
-      });
+      addMarca(nombre, descripcion);
     } else {
-      await fetch(`${API_URL}/${editId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, descripcion }),
-      });
+      editMarca(editId, nombre, descripcion);
       setEditId(null);
     }
     setNombre("");
     setDescripcion("");
-    fetchMarcas();
   };
 
-  // Delete marca
-  const handleDelete = async (id: number) => {
-    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-    fetchMarcas();
-  };
-
-  // Edit marca
-  const handleEdit = (marca: Marca) => {
+  const handleEdit = (marca: { id: number; nombre: string; descripcion: string }) => {
     setEditId(marca.id);
     setNombre(marca.nombre);
     setDescripcion(marca.descripcion);
+  };
+
+  const handleDelete = (id: number) => {
+    removeMarca(id);
   };
 
   const handleCancelEdit = () => {
@@ -74,6 +43,7 @@ export default function Home() {
   return (
     <div className="max-w-xl mx-auto py-10">
       <h1 className="text-2xl font-bold mb-6">CRUD de Marcas</h1>
+      {error && <div className="mb-4 text-red-600">{error}</div>}
       <MarcaForm
         nombre={nombre}
         descripcion={descripcion}
@@ -83,11 +53,15 @@ export default function Home() {
         editId={editId}
         onCancelEdit={handleCancelEdit}
       />
-      <MarcaList
-        marcas={marcas}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      {loading ? (
+        <div className="text-center py-4">Cargando...</div>
+      ) : (
+        <MarcaList
+          marcas={marcas}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
     </div>
   );
 }
