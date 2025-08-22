@@ -1,5 +1,9 @@
-class MarcaModel:
-    def __init__(self, id: int, nombre: str, descripcion: str):
-        self.id = id
-        self.nombre = nombre
-        self.descripcion = descripcion
+from sqlalchemy import Column, Integer, String
+from .db import Base
+
+class Marca(Base):
+    __tablename__ = "marcas"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String, nullable=False)
+    descripcion = Column(String, default="")

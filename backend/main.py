@@ -1,28 +1,13 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import sqlite3
+from models.db import Base, engine
 from routes.marca import router as marca_router
 
 app = FastAPI()
 
-# Database setup
-DB_NAME = "marcas.db"
-
-def init_db():
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS marcas (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL,
-        descripcion TEXT
-    )
-    """)
-    conn.commit()
-    conn.close()
-
-init_db()
+# Inicializar la base de datos con SQLAlchemy ORM
+Base.metadata.create_all(bind=engine)
 
 # CORS config (permitir acceso desde frontend)
 app.add_middleware(

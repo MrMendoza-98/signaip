@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from typing import List
-from ..schemas.marca import MarcaCreate, MarcaUpdate, MarcaOut
-from ..services.marca_service import MarcaService
+from schemas.marca import MarcaCreate, MarcaUpdate, MarcaOut
+from services.marca_service import MarcaService
 
 router = APIRouter()
 
