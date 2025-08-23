@@ -1,18 +1,19 @@
+"use client";
 export type Marca = {
   id: number;
   nombre: string;
   descripcion: string;
 };
 
-const API_URL = "http://127.0.0.1:8000/marcas";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/marcas`;
 
 export async function getMarcas(): Promise<Marca[]> {
-  const res = await fetch(API_URL);
+  const res = await fetch(`${API_URL}`);
   return res.json();
 }
 
 export async function createMarca(nombre: string, descripcion: string): Promise<Marca> {
-  const res = await fetch(API_URL, {
+  const res = await fetch(`${API_URL}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ nombre, descripcion }),
