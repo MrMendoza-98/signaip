@@ -8,7 +8,7 @@ export function useMarcaForm(initialNombre = "", initialDescripcion = "") {
   const [editId, setEditId] = useState<number | null>(null);
 
   function validateStep() {
-    let newErrors: {nombre?: string; descripcion?: string} = {};
+    const newErrors: {nombre?: string; descripcion?: string} = {};
     if (step === 1) {
       if (!nombre.trim()) {
         newErrors.nombre = "El nombre de la marca es obligatorio.";

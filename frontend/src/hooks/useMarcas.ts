@@ -12,7 +12,7 @@ export function useMarcas() {
       const data = await getMarcas();
       setMarcas(data);
       setError(null);
-    } catch (err) {
+    } catch {
       setError("Error al cargar marcas");
     } finally {
       setLoading(false);
@@ -28,7 +28,7 @@ export function useMarcas() {
     try {
       await createMarca(nombre, descripcion);
       fetchMarcas();
-    } catch (err) {
+    } catch {
       setError("Error al crear marca");
     } finally {
       setLoading(false);
@@ -40,7 +40,7 @@ export function useMarcas() {
     try {
       await updateMarca(id, nombre, descripcion);
       fetchMarcas();
-    } catch (err) {
+    } catch {
       setError("Error al actualizar marca");
     } finally {
       setLoading(false);
@@ -52,7 +52,7 @@ export function useMarcas() {
     try {
       await deleteMarca(id);
       fetchMarcas();
-    } catch (err) {
+    } catch {
       setError("Error al eliminar marca");
     } finally {
       setLoading(false);

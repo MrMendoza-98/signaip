@@ -6,13 +6,11 @@ import { useState } from "react";
 import { useMarcaForm } from "../hooks/useMarcaForm";
 import { useMarcas } from "../hooks/useMarcas";
 
-import Sidebar from "../components/ui/Sidebar";
 import { FaPlus, FaTrademark, FaHome } from "react-icons/fa";
 import Toast from "../components/Toast";
 import MarcaStepperModal from "../components/MarcaStepperModal";
 import Breadcrumbs from "../components/ui/Breadcrumbs";
 import MarcaTable from "../components/MarcaTable";
-import { Button } from "../components/ui/button";
 
 export default function Home() {
   const { marcas, addMarca, editMarca, removeMarca, loading, error } = useMarcas();
