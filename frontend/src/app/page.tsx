@@ -67,15 +67,16 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <aside className="w-64 bg-white border-r flex flex-col p-4">
+      {/* Sidebar: visible solo en md+ */}
+      <aside className="w-64 bg-white border-r flex-col p-4 hidden md:flex md:fixed md:h-full md:z-40">
         <h2 className="text-lg font-bold mb-6 flex items-center gap-2"><FaHome className="inline mr-2" />Panel</h2>
         <nav className="flex flex-col gap-2">
           <span className="mt-4 text-xs text-gray-500">Servicios</span>
           <a href="#" className="text-red-600 font-semibold bg-red-100 rounded px-2 py-1 flex items-center gap-2"><FaTrademark /> Registro de Marca</a>
         </nav>
       </aside>
-      <div className="flex-1 ml-64">
-        <div className="px-8 pt-6">
+      <div className="flex-1 md:ml-64">
+        <div className="px-2 pt-4 md:px-8 md:pt-6">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Marcas</h1>
@@ -107,7 +108,9 @@ export default function Home() {
           {loading ? (
             <div className="text-center py-4">Cargando...</div>
           ) : (
-            <MarcaTable marcas={marcas} onEdit={handleEdit} onDelete={handleDelete} />
+            <div className="overflow-x-auto">
+              <MarcaTable marcas={marcas} onEdit={handleEdit} onDelete={handleDelete} />
+            </div>
           )}
         </div>
       </div>
